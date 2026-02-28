@@ -1,0 +1,21 @@
+{
+  "name": "ZWF",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./mod.ts"
+  },
+  "tasks": {
+    "test": "deno test -A ./test/ ",
+    "build": "deno bundle ./mod.ts -o ./dist/ZWF.min.js"
+  },
+  "imports": {
+    "#self": "./lib/mod.ts",
+    "#internal": "./lib/internal.ts",
+
+    "@chzky/core": "jsr:@chzky/core",
+    "@chzky/std": "jsr:@chzky/std",
+    "@chzky/cest": "jsr:@chzky/cest"
+  },
+  "exclude": ["dist/", "node_modules/"],
+  "nodeModulesDir": "auto"
+}

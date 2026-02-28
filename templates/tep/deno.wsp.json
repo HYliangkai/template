@@ -1,0 +1,15 @@
+{
+  "workspace": [],
+
+  "tasks": {
+    "test": "deno test"
+  },
+
+  "imports": {
+    "@chzky/core": "jsr:@chzky/core",
+    "@chzky/std": "jsr:@chzky/std",
+    "@chzky/cest": "jsr:@chzky/cest"
+  },
+
+  "exclude": ["dist/", "node_modules/"]
+}

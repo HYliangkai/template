@@ -1,0 +1,30 @@
+{
+  "name": "ZWF",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./main.ts"
+  },
+  "tasks": {
+    "run": "deno -A ./main.ts",
+    "preload": "deno --preload ./setup.ts -A ./main.ts",
+    "test": "deno test -A ./test/ ",
+    "mod": "deno run -A jsr:@chzkyli/cli@0.2.1 mod ./lib",
+    "build": "deno compile -o ./dist/ZWF -A ./main.ts"
+  },
+
+  "imports": {
+    "@/": "./src/",
+    "#self": "./lib/mod.ts",
+    "#internal": "./lib/internal.ts",
+
+    "@chzky/core": "jsr:@chzky/core",
+    "@chzky/std": "jsr:@chzky/std",
+    "@chzky/cest": "jsr:@chzky/cest"
+  },
+
+  "exclude": ["dist/", "node_modules/"],
+  "nodeModulesDir": "auto",
+  "lint": {
+    "rules": { "tags": [], "include": ["explicit-function-return-type"] }
+  }
+}

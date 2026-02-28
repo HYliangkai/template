@@ -1,0 +1,10 @@
+{
+	"deno.enable": true,
+	"biome.enabled": true,
+	"editor.codeActionsOnSave": { "source.organizeImports.biome": "explicit" },
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"deno.json": ".gitignore,deno.lock,biome.jsonc",
+		"main.ts": "setup.ts"
+	}
+}

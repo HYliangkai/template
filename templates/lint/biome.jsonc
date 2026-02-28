@@ -1,0 +1,240 @@
+{
+	"root": true,
+
+	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+
+	"files": { "includes": ["**/*.ts", "**/*.json", "!node_modules", "!dist", "!generated"] },
+
+	"linter": {
+		"enabled": true,
+		"rules": {
+			//能提升运行效率的代码
+			"performance": {
+				"noDelete": "info", //尽量避免使用delete关键字(会导致引擎取消性能优化)
+				"useTopLevelRegex": "info" //正则表达式字面量最好在顶部创建(频繁声明会消耗性能)
+			},
+			//不对或不正确的代码
+			"complexity": {
+				"useIndexOf": "warn", //能使用indexOf就尽量使用(效率会高于findIndexOf)
+
+				"noImplicitCoercions": "warn", //警告使用运算符进行类型转换
+				"noStaticOnlyClass": "error", //拒绝定义纯静态成员类(即一个类都是static成员)
+				"noThisInStatic": "error", //static中不能使用this/super
+				"noUselessConstructor": "error", //禁止无用的构造函数
+				"noUselessContinue": "error", //禁止无用的continue
+				"noUselessEmptyExport": "error", //禁止在已经export的情况下export{ }
+				"noUselessRename": "error", //禁止无语的export/import
+				"noUselessCatch": "error", //禁止无用的catch
+				"noUselessUndefinedInitialization": "error", //禁止将变量定义为underfind
+				"useArrowFunction": "error", //禁止 const foo=function(){} --> 变为函数表达式
+				"useDateNow": "error", //使用Date.now()替代new Date().getTime()
+				"useFlatMap": "error", //使用flatMap替代map+flat
+				"useLiteralKeys": "error", // 优先使用字面量作为对象键 : foo['key'] --> foo.key
+				"useOptionalChain": "error", // 使用可选链替代显式判断
+				"useWhile": "error", // 使用while替代没有终止条件的for | 比如 for (; x.running;) {}
+				"useSimplifiedLogicExpression": "warn", //逻辑表达式中丢弃一些不影响表达结果的表达式
+				"useNumericLiterals": "warn", //使用进制表达式替代parseInt/parseFloat
+				"noUselessTypeConstraint": "warn", //警告 extends any/unkonw行为
+				"noUselessStringConcat": "warn", //对于字面量拼接应该直接拼接在一起
+				"noExcessiveCognitiveComplexity": "warn", //函数认知复杂度告警阈值为<15> (鼓励函数拆分)
+				"noArguments": "off", //允许使用argument
+				"noUselessUndefined": "warn"
+			},
+			"correctness": {
+				"useJsonImportAttributes": "error", //使用导入断言替代json直接导入
+				"noProcessGlobal": "error", //禁止使用未显式声明的'node:process' --> 防止运行在没有process的地方
+				"noVueDataObjectDeclaration": "error",
+				"noVueReservedKeys": "warn",
+				"noVueReservedProps": "error"
+			},
+			//代码风格配置
+			"style": {
+				"noMagicNumbers": "off", //提示使用魔法数字的情况
+				"useConsistentObjectDefinitions": { "level": "info", "options": { "syntax": "shorthand" } }, // 对于 {foo:foo} 这种对象表达式建议使用 {foo} 直接进行表达
+				"useObjectSpread": "info", //优先使用spread语法创建对象而不是Object.assign
+				"useUnifiedTypeSignatures": "warn", //可以简单合并的函数签名不需要重载
+				"useReadonlyClassProperties": {
+					"level": "warn",
+					"options": { "checkAllProperties": false }
+				}, //如果private数据从没被修改过就加个readonly标志
+				"useSymbolDescription": "error", //禁止没有描述字的symbol
+				// !代码命名规则!
+				"useNamingConvention": {
+					"level": "info",
+					"options": {
+						"strictCase": false,
+						"requireAscii": false,
+						"conventions": [
+							{
+								"selector": { "kind": "const" },
+								"formats": ["CONSTANT_CASE", "snake_case", "PascalCase"]
+							}, //const 变量 :: snake_case: 普通可不变变量 | CONSTANT_CASE: 常量 | PascalCase : likeStaticClass常量
+							{ "selector": { "kind": "variable" }, "formats": ["snake_case", "CONSTANT_CASE"] }, // let/var/using 变量
+							{ "selector": { "kind": "function" }, "formats": ["snake_case", "PascalCase"] }, // 函数名 :: snake_case: 普通函数 | PascalCase: 构造函数
+							{ "selector": { "kind": "functionParameter" }, "formats": ["snake_case"] }, // 函数参数名
+							{ "selector": { "kind": "catchParameter" }, "formats": ["snake_case"] }, // catch(e)参数名
+							{
+								"selector": { "kind": "objectLiteralMember" },
+								"match": "(.|\n|\r)*",
+								"formats": ["snake_case", "camelCase", "PascalCase", "CONSTANT_CASE"]
+							}, //对象成员 :: snake_case: 内部定义成员 | camelCase: 调用外部数据必须得传入的
+							{ "selector": { "kind": "enumMember" }, "formats": ["CONSTANT_CASE"] }, //枚举成员
+							{
+								"selector": { "kind": "typeParameter" },
+								"formats": ["PascalCase", "CONSTANT_CASE"]
+							}, //泛型签名
+							{ "selector": { "kind": "typeLike" }, "formats": ["PascalCase", "CONSTANT_CASE"] }, //类、枚举、类型别名和接口
+							{
+								"selector": { "kind": "classMethod", "modifiers": ["static"] },
+								"formats": ["PascalCase", "snake_case"]
+							}, //static method :: snake_case/PascalCase 静态方法
+							{ "selector": { "kind": "classMember" }, "formats": ["snake_case"] }, //类成员
+							{
+								"selector": { "kind": "typeProperty" },
+								"match": "(.|\n|\r)*",
+								"formats": ["snake_case", "camelCase", "PascalCase", "CONSTANT_CASE"]
+							},
+							{ "selector": { "kind": "typeMember" }, "formats": ["snake_case"] }, //类型成员
+							{ "selector": { "kind": "indexParameter" }, "formats": ["PascalCase", "snake_case"] }, //索引签名
+							{
+								"selector": { "kind": "importAlias" },
+								"formats": ["snake_case", "PascalCase", "CONSTANT_CASE"]
+							}, //导入行为 :: snake_case: 导入函数库 | PascalCase: 导入库 | CONSTANT_CASE : 导入数据
+							{ "selector": { "kind": "exportAlias" }, "formats": ["snake_case", "PascalCase"] }, //导出行为 :: snake_case: 导出函数库 | PascalCase: 导出类库 | CONSTANT_CASE : 导出数据
+							{ "selector": { "kind": "namespaceLike" }, "formats": ["snake_case", "PascalCase"] } // namespace定义/导入/导出
+						] //  此外,以下涉及到的命名规范将被忽略 :
+						//    外部导入的数据 | 解构的keyname | override方法 | declare扩展
+					}
+				},
+				// !文件命名规则!
+				"useFilenamingConvention": {
+					"level": "warn",
+					"options": { "strictCase": false, "filenameCases": ["camelCase", "export"] } // 命名 :: camelCase: 普通形式 | export: 导出其中的一个name名
+				},
+				"useImportType": { "options": { "style": "separatedType" }, "level": "warn" }, //类型文件必须显式导入
+				"useNodejsImportProtocol": "error", //node模块使用'node:'前缀
+				"noInferrableTypes": "error", //禁止显而易见的变量类型声明
+				"noUselessElse": "error", //if中如何有显式的流程退出语句禁止使用else
+				"noCommonJs": "error", //禁止使用CommonJS语法
+				"useDefaultParameterLast": "error", //可选参数和默认参数必须放后面
+				"useSingleVarDeclarator": "error", //一个变量声明语句只能声明一个变量
+				"useTrimStartEnd": "error", //trimLeft()/trimRIght() 将被 trimStart()/trimEnd() 替代
+				"useTemplate": "warn", //能使用模板字符串就尽量使用,而不是字符串拼接
+				"useNumberNamespace": "warn", //使用Number上的函数必须要有`Number.`前缀
+				"useExponentiationOperator": "warn", //使用 ** 替代Math.pow(-1, n)
+				"useConst": "warn", //对仅赋值一次的变量使用const声明
+				"useForOf": "warn", //能使用for-of尽量使用for-of
+				"useArrayLiterals": "warn", // Array构造函数最好用创建指定长度的稀疏数组而不是直接创建数组
+				"useAtIndex": "info", //当使用at()更方便时使用at()而不是[idx]
+				"useCollapsedElseIf": "info", //能使用else if 最好使用而不是使用else{if{}}
+				"useCollapsedIf": "info", //能使用一个if最好使用而不是两个连在一起的if
+				"useAsConstAssertion": "info", //创建字面量类型最好使用 as const来定义
+				"useShorthandAssign": "info", //尽量使用短运算符 : a=a+1 --> a+=1
+				"useShorthandFunctionType": "info", //强制使用函数类型而不是带有调用签名的对象类型。
+				"useLiteralEnumMembers": "off" //允许枚举成员可以是标准值
+			},
+			//可能不对或者不正确的代码
+			"suspicious": {
+				"noUselessEscapeInString": "error", //禁止无效的字符串转义
+				"noUnassignedVariables": "error", //禁止读取未分配的变量
+				"noBitwiseOperators": "error", //禁止位运算 --> 防止错误设置
+				"noConstantBinaryExpressions": "error", // 不允许运算不影响值的表达式(多余表达式)
+				"noVar": "error", //🚫使用var
+				"noConfusingLabels": "error", //在非循环的情况下不允许创建label标签
+				"noConstEnum": "error", //禁止使用const enum
+				"noConfusingVoidType": "error", //void只能作为参数返回值
+				"noCompareNegZero": "error", //不能和-0进行比较(-0===0)
+				"noCatchAssign": "error", //不能操作catch参数(很可能是写错了)
+				"noAsyncPromiseExecutor": "error", //不能将async函数作为Promise执行器(考虑一下其他写法)
+				"noDebugger": "error", //禁止使用debugger(很可能是写错了)
+				"noDuplicateCase": "error", //switch中不能有相同的case
+				"noDuplicateClassMembers": "error", //不允许重复的类成员
+				"noDuplicateElseIf": "error", //不允许重复的if-else条件
+				"noDuplicateObjectKeys": "error", //不允许对象有重复键名
+				"noDuplicateParameters": "error", //不允许重复参数名
+				"noEmptyInterface": "error", //不允许空接口声明
+				"noFunctionAssign": "error", //不允许重新分配函数声明
+				"noGlobalAssign": "error", //不允许重新分配全局变量
+				"noImportAssign": "error", //导入的属性不能重新赋值
+				"useGuardForIn": "warn", //for in 循环会遍历原型链属性,要用if(Object.hasOwn())来过滤掉原型链数据
+				"useAwait": "warn", //检查async函数是否有用到await
+				"noImplicitAnyLet": "warn", //变量在无值定义的时候不能定义为any
+				"noExtraNonNullAssertion": "warn", //警告非空断言
+				"noEmptyBlockStatements": "warn", //对于空块内容给予警告
+				"noExplicitAny": "warn", //any类型直接警告
+				"noDoubleEquals": "warn", //对于使用 ==/!= 的情况做警告
+				"noAssignInExpressions": "warn", //对于在表达式中赋值的行为给予警告(很可能是写错了)
+				"noApproximativeNumericConstant": "info", //提示使用标准库中的近似值常量
+				"noMisleadingInstantiator": "off" //可以使用new作为方法名
+			},
+
+			//不稳定规则
+			"nursery": {
+				"noMisusedPromises": "error", //禁止在没有await的情况下直接使用promise值 --> 没有使用意义
+				"noShadow": "info", // 对于shadow name给予提示
+				"useExplicitType": "off" //显式声明类型
+			}
+		}
+	},
+
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"useSortedKeys": "off",
+				"useSortedProperties": "on",
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							{ "type": true },
+							":BLANK_LINE:" /* Type File */,
+
+							["#self", "#Internal"] /* Proj Self */,
+							[":BUN:", ":NODE:", "@std/**", "jsr:@std/**"] /* Deno/Node/Bun Std  */,
+							["@chzky/**", "jsr:@chzky/**", "npm:@chzky/**"] /* Chzky pkg */,
+							":BLANK_LINE:",
+
+							":URL:" /* URL */,
+							":ALIAS:" /* Import Map */,
+							["@/**"] /* Import Map */,
+							":PACKAGE_WITH_PROTOCOL:" /* jsr/npm */,
+							"PACKAGE:" /* Custom pkg */,
+							":BLANK_LINE:",
+
+							":PATH:" /* Local files */
+						]
+					}
+				}
+			}
+		}
+	},
+
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"formatWithErrors": true, //允许格式化有语法错误的文档。
+		"lineWidth": 100,
+		"expand": "never" //对象|数组换行优先级 <优先一行>
+	},
+
+	"javascript": {
+		"parser": { "unsafeParameterDecoratorsEnabled": true },
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"jsxQuoteStyle": "single",
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingCommas": "es5",
+			"lineWidth": 100
+		}
+	},
+
+	"json": { "parser": { "allowComments": true, "allowTrailingCommas": true } },
+
+	"html": {
+		// SFC文件支持
+		"experimentalFullSupportEnabled": true
+	}
+}

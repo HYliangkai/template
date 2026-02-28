@@ -1,0 +1,17 @@
+{
+  "name": "ZWF",
+  "version": "0.0.1",
+
+  "exports": {
+    ".": "./lib/mod.ts"
+  },
+  "tasks": {
+    "test": "deno test -A ./test/ "
+  },
+  "imports": {
+    "@/": "./src/",
+    "#self": "./lib/mod.ts",
+    "#internal": "./lib/internal.ts"
+  },
+  "nodeModulesDir": "auto"
+}
