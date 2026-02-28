@@ -2,7 +2,7 @@
 
 [![JSR](https://jsr.io/badges/@chzkyli/template)](https://jsr.io/@chzkyli/template)
 
-`@chzkyli/template` 是一个专为 Deno 项目设计的轻量级、模块化、交互式脚手架工具。它可以帮助开发者快速构建符合规范的项目结构，内置了多种模板以适应不同的开发场景。
+`@chzkyli/template` 是一个专为项目设计的轻量级、模块化、交互式脚手架工具。它可以帮助开发者快速构建符合规范的项目结构，内置了多种模板以适应不同的开发场景。
 
 ## ✨ 特性
 

@@ -1,9 +1,6 @@
-name: Publish
+name: Test
 on:
-  workflow_run:
-    workflows: ['Test']
-    types:
-      - completed
+  push:
     branches:
       - main
 
@@ -22,5 +19,5 @@ jobs:
         with:
           deno-version: latest
 
-      - name: Publish Package
-        run: deno publish
+      - name: Testing Package
+        run: deno test -A
