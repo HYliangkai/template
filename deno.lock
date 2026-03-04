@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@chzky/cest@~0.5.6": "0.5.6",
     "jsr:@cliffy/ansi@1.0.0": "1.0.0",
     "jsr:@cliffy/internal@1.0.0": "1.0.0",
     "jsr:@cliffy/keycode@1.0.0": "1.0.0",
@@ -18,6 +19,9 @@
     "npm:@biomejs/biome@*": "2.4.4"
   },
   "jsr": {
+    "@chzky/cest@0.5.6": {
+      "integrity": "ac7b5a80ea91481f60891fbe600e9953056ee8bf9bd7bb82cf787d2c7cde3d53"
+    },
     "@cliffy/ansi@1.0.0": {
       "integrity": "987008f74e50aa72cc1517ffccc769711734a14927bc4599e052efe1b9a840e2",
       "dependencies": [
@@ -150,6 +154,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@chzky/cest@~0.5.6",
       "jsr:@cliffy/prompt@1",
       "jsr:@std/assert@1",
       "jsr:@std/cli@^1.0.28",

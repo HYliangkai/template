@@ -16,6 +16,7 @@
 		"@/": "./src/",
 		"#self": "./lib/mod.ts",
 		"#internal": "./lib/internal.ts",
+		"@chzky/cest": "jsr:@chzky/cest@^0.5.6",
 
 		"@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0",
 		"@std/cli": "jsr:@std/cli@^1.0.28",
